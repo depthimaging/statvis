@@ -31,6 +31,8 @@ for(i in 1:length(sample_json))
   print(format(end, "%T"))
   #Find the duration
   print("Duration: ")
+  print(end-start)
 }
 
 #dhsudhshdsdu
+#
