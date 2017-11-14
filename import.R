@@ -1,3 +1,4 @@
+#Note: Some comments in this code are OUTDATED!!
 library('jsonlite')
 
 #initialize a list of 3 lists
