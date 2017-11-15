@@ -57,10 +57,16 @@ void setup(){
   bg = loadImage("bplan.jpg");
   
   fullScreen(); 
-  //size(displayWidth, displayHeight);
-  print(displayWidth, displayHeight);
+
+  reset();
+}
+
+void reset(){
+  
   fill(255);
   rect(room_oX,room_oY,wd,ht);
+  bg = loadImage("bplan.jpg");
+  
   
   background(bg);
   
@@ -72,9 +78,9 @@ void setup(){
     fill(trkColor); text("Height:",text_oX,text_oY+i*50); fill(trkColor); text(h_mid[i],text_oX+90,text_oY+i*50);
     fill(trkColor); text("Steps: ",text_oX,text_oY+20+i*50); fill(trkColor); text(lenght[i],text_oX+90,text_oY+20+i*50);
   } 
-}
-
-void reset(){
+  
+  
+  
    loadData();
 }
 void update(int x, int y) {
@@ -135,7 +141,7 @@ void draw() {
   
     count[i]++;
     }
-    delay(150);
+    delay(50);
   }
   
 }  
