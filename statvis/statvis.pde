@@ -4,7 +4,7 @@ import  java.lang.Object;
 // Example of Reading from JSON and Visualisation of Visitor Tracks
 // 1.2 / p3.3
 
-String filename="19.json";                    // temp. filename
+String filename="19o.json";                    // temp. filename
 Boolean isInit = false;
 JSONObject json;
 
@@ -17,6 +17,7 @@ float h;
 int i0=0;int i1=0;
 int[] count;
 
+PImage bg;
 
 float[][] x_coord;
 float[][] y_coord;
@@ -36,8 +37,8 @@ int oY = 850;
 
 int room_oX = 250;
 int room_oY = 30;
-int wd = 1100;
-int ht = 700;
+int wd = 1110;
+int ht = 615;
 
 
 int rectX = 10, rectY = 30;      // Position of square button
@@ -52,23 +53,30 @@ boolean rectOver = false;
 void setup(){
  
   loadData();
-
+  
+  bg = loadImage("bplan.jpg");
+  
   fullScreen(); 
+  //size(displayWidth, displayHeight);
+  print(displayWidth, displayHeight);
   fill(255);
   rect(room_oX,room_oY,wd,ht);
   
+  background(bg);
   
 
   for (int i = 0; i < lenght.length; i++) {
+    color trkColor = color( (i%3)* 255, ((i+1)%3) * 255, ((i+2)%3) * 255 );
+    
     // Text information
-    fill(0); text("Height:",text_oX,text_oY+i*100); fill(255,0,0); text(h_mid[i],text_oX+90,text_oY+i*100);
-    fill(0); text("Steps: ",text_oX,text_oY+20+i*100); fill(255,0,0); text(lenght[i],text_oX+90,text_oY+20+i*100);
-    fill(0); text("Starting time: ",text_oX,text_oY+40+i*100); fill(255,0,0); text(tracks[i].getJSONObject(0).getString("time"),text_oX+90,text_oY+40+i*100);
-    fill(0); text("Ending time: ",text_oX,text_oY+60+i*100);fill(255,0,0); text(tracks[i].getJSONObject(lenght[i]-1).getString("time"),text_oX+90,text_oY+60+i*100);
+    fill(trkColor); text("Height:",text_oX,text_oY+i*50); fill(trkColor); text(h_mid[i],text_oX+90,text_oY+i*50);
+    fill(trkColor); text("Steps: ",text_oX,text_oY+20+i*50); fill(trkColor); text(lenght[i],text_oX+90,text_oY+20+i*50);
   } 
 }
 
-
+void reset(){
+   loadData();
+}
 void update(int x, int y) {
 if ( overRect(rectX, rectY, rectSizeW, rectSizeH) ) {
     rectOver = true;
@@ -80,6 +88,7 @@ if ( overRect(rectX, rectY, rectSizeW, rectSizeH) ) {
 void mousePressed() {
   if (rectOver) {
     currentColor = rectColor;
+    reset();
   }
 }
 
@@ -96,6 +105,7 @@ boolean overRect(int x, int y, int width, int height)  {
 void draw() {
   update(mouseX, mouseY);
   
+  
    if (rectOver) {
       fill(rectHighlight);
     } else {
@@ -106,21 +116,28 @@ void draw() {
   rect(rectX, rectY, rectSizeW, rectSizeH);
   fill(0); text("Replay", rectX+15,rectY+17);
       
+      
+  
+
   for (int i = 0; i < lenght.length; i++) {
-    fill(255);
+      
+    color trkColor = color( (i%3)* 255, ((i+1)%3) * 255, ((i+2)%3) * 255 );
+    
+    fill(trkColor);
     if (count[i]<lenght[i]) {
    
-    stroke(255,0,0);
+    stroke(trkColor);
       
     if (count[i]<lenght[i]-1) 
       line(oX+y_coord[i][count[i]],oY-x_coord[i][count[i]],oX+y_coord[i][count[i]+1],oY-x_coord[i][count[i]+1]);
     
-    ellipse(oX+y_coord[i][count[i]],oY-x_coord[i][count[i]],6,6);
+    ellipse(oX+y_coord[i][count[i]],oY-x_coord[i][count[i]],10,10);
   
     count[i]++;
     }
     delay(150);
   }
+  
 }  
 
 void init(int noTracks, int no_elements) {
@@ -166,7 +183,7 @@ void loadData() {
       lenght[j]=tracks[j].size();                                   // Size of the dataset
       
       for (int i = 0; i < lenght[j]; i++) {
-      
+  //    println("key: ",key);
         JSONObject item = tracks[j].getJSONObject(i);
       moment = tracks[j].getJSONObject(i);                         
 
@@ -188,19 +205,20 @@ void loadData() {
        x_coord[j][i]=x*140;                                            
        y_coord[j][i]=y*140;  
   
-      println(item);
+     // println(item);
       
     }
     
      h_mid[j]=h/lenght[j]; h=0;                                      
 
-     println("Track "+j+" start time: "+timestamps[j][0]);
-     println("Track "+j+" end time: "+timestamps[j][lenght[j]-1]);
+     //println("Track "+j+" time: "+timestamps[j][0]);
+     
+     //println("Track "+j+" end time: "+timestamps[j][lenght[j]-1]);
 
      println();
 
-     println(start_time);
-     println(end_time);
+     //println(start_time);
+     //println(end_time);
   //ids = json.keys();
   j++;
 }
