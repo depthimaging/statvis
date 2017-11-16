@@ -13,11 +13,16 @@ JSONObject moment;
 //Array of json arrays
 JSONArray[] tracks;
 
+
+float[][] interp_array;
+ 
+
 float h;
 int i0=0;int i1=0;
 int[] count;
 
 PImage bg;
+PImage destination;
 
 float[][] x_coord;
 float[][] y_coord;
@@ -77,11 +82,12 @@ void reset(){
     // Text information
     fill(trkColor); text("Height:",text_oX,text_oY+i*50); fill(trkColor); text(h_mid[i],text_oX+90,text_oY+i*50);
     fill(trkColor); text("Steps: ",text_oX,text_oY+20+i*50); fill(trkColor); text(lenght[i],text_oX+90,text_oY+20+i*50);
-  } 
-  
-  
-  
+  }
    loadData();
+   
+  interp_array = new float[wd][ht];
+  makeArray();
+  applyColor();
 }
 void update(int x, int y) {
 if ( overRect(rectX, rectY, rectSizeW, rectSizeH) ) {
@@ -89,6 +95,7 @@ if ( overRect(rectX, rectY, rectSizeW, rectSizeH) ) {
   } else {
     rectOver = false;
   }
+  //applyColor();
 }
 
 void mousePressed() {
@@ -110,6 +117,7 @@ boolean overRect(int x, int y, int width, int height)  {
 
 void draw() {
   update(mouseX, mouseY);
+  background(bg);
   
   
    if (rectOver) {
@@ -143,7 +151,7 @@ void draw() {
     }
     delay(50);
   }
-  
+  applyColor();
 }  
 
 void init(int noTracks, int no_elements) {
@@ -232,3 +240,48 @@ void loadData() {
 
 
 }  //loadData()
+
+
+
+
+ 
+// Fill array with Perlin noise (smooth random) values
+void makeArray() {
+  for (int r = 0; r < ht; r++) {
+    for (int c = 0; c < wd; c++) {
+      // Range is 24.8 - 30.8
+      interp_array[c][r] = 24.8 + 6.0 * noise(r * 0.02, c * 0.02);
+    }
+  }
+}
+ 
+void applyColor() {  // Generate the heat map
+  pushStyle(); // Save current drawing style
+  // Set drawing mode to HSB instead of RGB
+  colorMode(HSB, 1, 1, 1);
+  bg.loadPixels();
+  int p = 0;
+  
+  for (int r = 0; r < ht; r++) {
+    for (int c = 0; c < wd; c++) {
+      // Get the heat map value 
+      float value = interp_array[c][r];
+      // Constrain value to acceptable range.
+      value = constrain(value, 25, 30);
+      // Map the value to the hue
+      // 0.2 blue
+      // 1.0 red
+      value = map(value, 25, 30, 0.2, 1.0);
+      
+      //p = r + c* wd ;
+      //println(p);
+      bg.pixels[p++] = color(value, 0.9, 1);
+      //bg.pixels[r + c* wd] = color(value, 0.9, 1);
+      //fill(color(value, 0.9, 1));
+      //point(r,c);
+    }
+  }
+  bg.updatePixels();
+  background(bg);
+  popStyle(); // Restore original drawing style
+}
