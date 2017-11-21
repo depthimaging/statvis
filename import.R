@@ -62,3 +62,6 @@ for(filename_w_path in files)
     print(end-start)
   }
 }
+#Need to find a way to hold decimal second values as in the JSON.
+#"%OS7" is not working for some reason
+#Tried with setting the options() function

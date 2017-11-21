@@ -24,6 +24,7 @@ plot(track_class)
 
 #Custom smoothening function: need to find the inner working mechanism
 smoothen = function(x, y, xout,...) {
+  
   predict(smooth.spline(as.numeric(x), y), as.numeric(xout))
 }
 
