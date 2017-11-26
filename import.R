@@ -38,12 +38,18 @@ for(filename_w_path in files)
   sample_json = sample_json$bodies_data
   
   
-  
+  # columns = c()
+  # startpos = 0
   #Note: going through each directory on the disk: c1, c2 and c4 might have to be implemented to import data recursively
   #go through each of the data frames in sample_json and store them in the correct sub-list of json_data according to the camera
   for(i in 1:length(sample_json))
   {
+    # columns = c(columns, names(sample_json[i]))
+    
     tailpos = length(json_data[[cid]]) + 1
+    
+    # if(i == 1) startpos = tailpos
+    
     #In the next line: "json_data$c1" might have to be made dynamic by changing it to json_data[1], for example
     #This can be done after implementing recursive directory traversal (see "Note" above)
     json_data[[cid]][tailpos] = sample_json[i]
@@ -61,7 +67,13 @@ for(filename_w_path in files)
     print("Duration: ")
     print(end-start)
   }
+  # c_name = paste("c", cid, sep = "")
+  # names(json_data[[cid]][startpos:length(json_data[[cid]])]) = c(columns)
+  # columns = NA
 }
 #Need to find a way to hold decimal second values as in the JSON.
 #"%OS7" is not working for some reason
 #Tried with setting the options() function
+
+source("loc2glob.R")
+globalized_json = loc2glob(json_data)
