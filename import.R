@@ -37,6 +37,8 @@ for(filename_w_path in files)
   sample_json = jsonlite::fromJSON(sample_json)
   sample_json = sample_json$bodies_data
   
+  #Since there is no camera 3; a makeshift solution
+  if(cid == 4) cid = 3
   
   # columns = c()
   # startpos = 0
