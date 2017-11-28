@@ -57,14 +57,17 @@ for(filename_w_path in files)
     json_data[[cid]][tailpos] = sample_json[i]
     #access by: json_data$c1[[i]]$x, json_data$c1[[i]]$time etc.
     #converting "time" to POSIX time
-    json_data[[cid]][[tailpos]]$time = strptime(json_data[[cid]][[tailpos]]$time, format = "%T")
+    # op <- options(digits.secs=6)
+    json_data[[cid]][[tailpos]]$time = strptime(json_data[[cid]][[tailpos]]$time, format = "%H:%M:%OS")#, format = "%H:%M:%OS")
+    json_data[[cid]][[tailpos]]$camera = cid
+    
     #Find starting & ending times
     print("Start time: ")
-    start = head(json_data[[cid]][[tailpos]]$time,1)
-    print(format(start, "%T"))
+    start = head(json_data[[cid]][[tailpos]]$time, 1)
+    print(start)
     print("End time: ")
-    end = tail(json_data[[cid]][[tailpos]]$time,1)
-    print(format(end, "%T"))
+    end = tail(json_data[[cid]][[tailpos]]$time, 1)
+    print(end)
     #Find the duration
     print("Duration: ")
     print(end-start)
@@ -73,9 +76,11 @@ for(filename_w_path in files)
   # names(json_data[[cid]][startpos:length(json_data[[cid]])]) = c(columns)
   # columns = NA
 }
-#Need to find a way to hold decimal second values as in the JSON.
-#"%OS7" is not working for some reason
-#Tried with setting the options() function
+
 
 source("loc2glob.R")
 globalized_json = loc2glob(json_data)
+
+source("trajectory.R")
+globalized_tracks = create_trajectories(globalized_json)
+
