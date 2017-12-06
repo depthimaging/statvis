@@ -17,7 +17,7 @@ for(filename_w_path in files)
   #Can be made dynamic to get the position numbers using grep - but can also result in pitfalls!
   #For now since the JSON structure is consistent, this is enough.
   cid = as.numeric(substr(json_value, 12, 13))
-  height = as.numeric(substr(json_value, 104, 107))
+  # height = as.numeric(substr(json_value, 104, 107))
   # global_x = as.numeric(substr(json_value, 125, <end position here>))
   # global_y = as.numeric(substr(json_value, 147, <end position here>))
   # global_z = as.numeric(substr(json_value, 169, <end position here>))
@@ -25,7 +25,7 @@ for(filename_w_path in files)
   
   #Combine camera information into a dataframe
   #The other variables mentioned above have to be added too.
-  cinfo = data.frame(cid, height)
+  # cinfo = data.frame(cid, height)
   # ==============================================================================
   
   

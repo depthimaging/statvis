@@ -16,6 +16,7 @@ duplicate_trackpoints = function(tA, tB)
     t2 = tA
   }
   index = 0
+  ijd = data.frame()
   if(TrackSummary(t1)$tmax > TrackSummary(t2)$tmin)
   {
     i2 = 1
@@ -53,7 +54,8 @@ duplicate_trackpoints = function(tA, tB)
     tD = cross_temporal_treshold(tdist)
     tdist = as.difftime(tdist, units = "secs")
     stD = as.logical(bitwAnd(sdist, tdist))
-    ijd = data.frame(index, sdist, sD, tdist, tD, stD)    }
-    return(ijd$stD)
-  } #else return(data.frame(FALSE))
-}
+    ijd = data.frame(index, sdist, sD, tdist, tD, stD)    
+  }
+  return(ijd$stD)
+} #else return(data.frame(FALSE))
+
