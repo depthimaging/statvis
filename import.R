@@ -84,3 +84,65 @@ globalized_json = loc2glob(json_data)
 source("trajectory.R")
 globalized_tracks = create_trajectories(globalized_json)
 
+
+
+
+
+ti=0
+
+for(tri in 1:(length(globalized_json)-1))
+{
+  for(trj in 1:length(globalized_json[[tri]]))
+  {
+    ti=ti+1
+    if(ti==2 || ti==9)
+      next
+    
+    egtrack = globalized_tracks[[ti]]
+    
+    
+    source("find_stops.R")
+    if(dim(bpts_df)[1]==0){
+      next
+    }
+    
+    
+    globalized_json[[tri]][[trj]]$stop = rep(1,dim(globalized_json[[tri]][[trj]])[1])
+    for(k in 1:(dim(bpts_df)[1]))  
+    {
+      globalized_json[[tri]][[trj]]$stop[bpts_df[k,1]:bpts_df[k,2]]=0
+      
+    }
+    print( paste("aafsesef: ",toString(trj)))
+  }
+  
+}  
+
+
+l = c()
+
+trackCount = 1
+
+
+for(i in 1:(length(globalized_json)-1))
+{
+  
+  
+  for(j in 1:length(globalized_json[[i]]))
+  {
+    l[paste("t0",trackCount,sep="")] = globalized_json[[i]][j]
+    trackCount=trackCount+1
+  }
+}
+
+
+for(i in 1:(length(l)-1))
+{
+  l[[i]] = subset( l[[i]], select = c(1,2,4,21,22) )
+}
+
+
+newd = toJSON(l)
+
+writeLines(newd, paste("statvis","/data/test.json",sep="") )
+
