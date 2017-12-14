@@ -1,5 +1,6 @@
 #Note: Some comments in this code are OUTDATED!!
 library('jsonlite')
+library(fpc)
 
 #initialize a list of 3 lists
 #each sub-lists for each camera
@@ -83,4 +84,8 @@ globalized_json = loc2glob(json_data)
 
 source("trajectory.R")
 globalized_tracks = create_trajectories(globalized_json)
+#outline the fro and phantom
+source("outline.R")
+globalized_tracks_cleaned = outline(globalized_tracks)
+
 
