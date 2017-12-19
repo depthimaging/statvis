@@ -1,6 +1,6 @@
 library(sp)
 
-egtrack = globalized_tracks[[3]]
+egtrack = globalized_tracks[[1]]
 length_egtrack = dim(egtrack)[1]
 bool_stop = vector(length = length_egtrack-1)
 dist_window_m = 0.5
@@ -65,7 +65,9 @@ bpts_mat = matrix(data = bpts, ncol = 2, byrow = TRUE, dimnames = list(c(), c("s
 bpts_df = as.data.frame(bpts_mat)
 duration = vector(length = dim(bpts_df)[1])
 bbox = list()
-plot(egtrack, type = 'b')
+# plot(egtrack, type = 'b', ylim = c(0,6), xlim = c(-1,5))
+# points(cam, col = "red", pch = 19)
+plot(egtrack, type = 'b', main = "Track #3 from Camera #1")
 for(i in 1:dim(bpts_df)[1])
 {
   duration[i] = difftime(egtrack@endTime[bpts_df$end[i]], egtrack@endTime[bpts_df$start[i]], units = "secs")
